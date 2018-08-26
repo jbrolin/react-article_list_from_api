@@ -1,34 +1,18 @@
 import React, { Component } from "react";
 //import logo from "./logo.svg";
 import "./App.css";
-const list = [
-  {
-    title: "ReactJ",
-    url: "https://facebook.github.io/react/",
-    author: "Jordan Walke",
-    num_comments: 3,
-    points: 1,
-    objectId: 0
-  },
-  {
-    title: "ReduxD",
-    url: "https://github.com/reactjs/redux",
-    author: "Dan Abramov, Andew Clark",
-    num_comments: 2,
-    points: 2,
-    objectId: 1
-  },
-  {
-    title: "Book2",
-    url: "https://github.com/reactjs/redux",
-    author: "More, Mickael",
-    num_comments: 2,
-    points: 3,
-    objectId: 2
-  }
-];
 
-const orgList = list;
+const DEFAULT_QUERY = 'redux';
+const PATH_BASE = 'https://hn.algolia.com/api/v1';
+const PATH_SEARCH = "/search";
+const PARAM_SEARCH = "query=";
+
+const url = `${PATH_BASE}${PATH_SEARCH}?${PARAM_SEARCH}${DEFAULT_QUERY}`;
+console.log("#####", url);
+
+
+
+const orgList = "";
 
 const textFields = [
   {
@@ -50,19 +34,37 @@ class App extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      list: list,
-      textFields: textFields,
-      searchTerm: "",
+      //list: list,
+      //textFields: textFields,
+      result: null,
+      searchTerm: DEFAULT_QUERY,
 
     };
-
-    this.onReset = this.onReset.bind(this); // we need to bind 'this' if function is not an arrow function
+    this.setSearchTopStories = this.setSearchTopStories.bind(this);
+    //this.onReset = this.onReset.bind(this); // we need to bind 'this' if function is not an arrow function
     this.onSearchChange = this.onSearchChange.bind(this);
+    //this.onDismiss=this.onDismiss.bind(this);
+
   }
+
+  setSearchTopStories(result) {
+    this.setState({ result });
+  }
+
+
 
   onSearchChange(event) {
     this.setState({ searchTerm: event.target.value });
   }
+
+  componentDidMount() {
+    const { searchTerm } = this.state;
+    fetch(`${PATH_BASE}${PATH_SEARCH}?${PARAM_SEARCH}${searchTerm}`)
+      .then(response => response.json())
+      .then(result => this.setSearchTopStories(result))
+      .catch(error => error);
+  }
+
 
   onDismiss = id => {
     // using arrow function we do not need to bind the function
@@ -113,35 +115,19 @@ class App extends Component {
 
 
   render() {
-    const { searchTerm, list } = this.state; // destructing values from this.state
-    console.log("get", this.state, list);
+    const { searchTerm, result } = this.state; // destructing values from this.state
+    console.log("get", this.state, result);
+
+    if (!result) { return null; }
+
     return (
       <div className="page">
-
-        <Table
-          list={list}
-          pattern={searchTerm}
-          onDismiss={this.onDismiss}
-        />
-        <div className="interactions">
-          <Search
-            value={searchTerm}
-            onChange={this.onSearchChange}
-            onReset={this.onReset}
-          />
-          <Button onClick={() => this.onReset()}>
-            Reset list
-        </Button>
-
-          <Button onClick={() => this.onSortTitle()}>
-            Sort list by title
-        </Button>
-
-          <Button onClick={() => this.onSortAuthor()}>
-            Sort list by author
-        </Button>
-
-        </div>
+      
+      <Table
+      list={result.hits}
+      pattern={searchTerm}
+      onDismiss={this.onDismiss}
+      />
       </div>
     );
   }
