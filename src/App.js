@@ -12,20 +12,9 @@ console.log("#####", url);
 
 
 
+
 const orgList = "";
 
-const textFields = [
-  {
-    objectId: 0,
-    text: "Hello you!",
-    textStyle: "App-title"
-  },
-  {
-    objectId: 1,
-    text: "Hello you two!",
-    textStyle: "App-intro"
-  }
-];
 
 const isSearched = searchTerm => item =>
   item.title.toLowerCase().includes(searchTerm.toLowerCase());
@@ -43,7 +32,7 @@ class App extends Component {
     this.setSearchTopStories = this.setSearchTopStories.bind(this);
     //this.onReset = this.onReset.bind(this); // we need to bind 'this' if function is not an arrow function
     this.onSearchChange = this.onSearchChange.bind(this);
-    //this.onDismiss=this.onDismiss.bind(this);
+    this.onDismiss=this.onDismiss.bind(this);
 
   }
 
@@ -66,11 +55,14 @@ class App extends Component {
   }
 
 
-  onDismiss = id => {
-    // using arrow function we do not need to bind the function
-    const isNotId = item => item.objectId !== id;
-    const updatedList = this.state.list.filter(isNotId);
-    this.setState({ list: updatedList });
+  onDismiss(id) {
+  
+    const isNotId = item => item.objectID !== id;
+    const updatedHits = this.state.result.hits.filter(isNotId);
+    this.setState({
+      result: { ...this.state.result, hits: updatedHits }
+      
+    });
   };
 
 
@@ -128,6 +120,25 @@ class App extends Component {
       pattern={searchTerm}
       onDismiss={this.onDismiss}
       />
+      <div className="interactions">
+          <Search
+            value={searchTerm}
+            onChange={this.onSearchChange}
+            onReset={this.onReset}
+          />
+          <Button onClick={() => this.onReset()}>
+            Reset list
+        </Button>
+
+          <Button onClick={() => this.onSortTitle()}>
+            Sort list by title
+        </Button>
+
+          <Button onClick={() => this.onSortAuthor()}>
+            Sort list by author
+        </Button>
+
+        </div>
       </div>
     );
   }
