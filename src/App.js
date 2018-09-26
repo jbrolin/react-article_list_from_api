@@ -14,18 +14,6 @@ console.log("#####", url);
 
 const orgList = "";
 
-const textFields = [
-  {
-    objectId: 0,
-    text: "Hello you!",
-    textStyle: "App-title"
-  },
-  {
-    objectId: 1,
-    text: "Hello you two!",
-    textStyle: "App-intro"
-  }
-];
 
 const isSearched = searchTerm => item =>
   item.title.toLowerCase().includes(searchTerm.toLowerCase());
@@ -43,7 +31,7 @@ class App extends Component {
     this.setSearchTopStories = this.setSearchTopStories.bind(this);
     //this.onReset = this.onReset.bind(this); // we need to bind 'this' if function is not an arrow function
     this.onSearchChange = this.onSearchChange.bind(this);
-    //this.onDismiss=this.onDismiss.bind(this);
+    this.onDismiss=this.onDismiss.bind(this);
 
   }
 
@@ -112,8 +100,6 @@ class App extends Component {
     console.log(this.state.list);
   }
 
-
-
   render() {
     const { searchTerm, result } = this.state; // destructing values from this.state
     console.log("get", this.state, result);
@@ -122,13 +108,21 @@ class App extends Component {
 
     return (
       <div className="page">
-      
+     
       <Table
       list={result.hits}
       pattern={searchTerm}
       onDismiss={this.onDismiss}
       />
-      </div>
+      
+        <div className="interactions">
+        <Search
+          value={searchTerm}
+          onChange={this.onSearchChange}
+          onReset={this.onReset}
+        />
+        </div>
+        </div>
     );
   }
 }
