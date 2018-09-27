@@ -9,12 +9,7 @@ const PARAM_SEARCH = "query=";
 
 const url = `${PATH_BASE}${PATH_SEARCH}?${PARAM_SEARCH}${DEFAULT_QUERY}`;
 console.log("#####", url);
-
-
-
-
-const orgList = "";
-
+const orgList =  [];
 
 const isSearched = searchTerm => item =>
   item.title.toLowerCase().includes(searchTerm.toLowerCase());
@@ -56,7 +51,7 @@ class App extends Component {
 
 
   onDismiss(id) {
-    console.log("Dismiss");
+    console.log("Dismiss"+id);
     const isNotId = item => item.objectID !== id;
     const updatedHits = this.state.result.hits.filter(isNotId);
     this.setState({
@@ -69,10 +64,10 @@ class App extends Component {
     // using non arrow function we need to bind the function to get access to 'this'.
     this.setState({ searchTerm: "" });
 
-    // we need to copy the orginal list and resort it by objectId since the order of object are uncertain.
-
+    // we need to copy the orginal list and resort it by objectID since the order of object are uncertain.
+    
     const newOrgList = orgList.sort(function (a, b) {
-      return a.objectId - b.objectId
+      return a.objectID - b.objectID
     });
 
     this.setState({ list: newOrgList });
@@ -110,7 +105,7 @@ class App extends Component {
     console.log("get", this.state, result);
 
     if (!result) { return null; }
-
+   
     return (
       <div className="page">
       
@@ -119,6 +114,8 @@ class App extends Component {
       pattern={searchTerm}
       onDismiss={this.onDismiss}
       />
+      
+           <div className="interactions">
           <Search
             value={searchTerm}
             onChange={this.onSearchChange}
@@ -136,6 +133,7 @@ class App extends Component {
             Sort list by author
         </Button>
 
+        </div>
         
       </div>
     );
@@ -157,7 +155,7 @@ const Table = ({ list, pattern, onDismiss }) =>
 
   <div className="table">
     {list.filter(isSearched(pattern)).map(item => (
-      <div key={item.objectId} className="table-row">
+      <div key={item.objectID} className="table-row">
         <span className="largeColumn">
           <a href={item.url} target="_new">
             {item.title}
@@ -173,7 +171,7 @@ const Table = ({ list, pattern, onDismiss }) =>
           {item.points}
         </span>
         <span style={{ width: '10%' }}>
-          <Button onClick={() => onDismiss(item.objectId)} className="button-inline">
+          <Button onClick={() => onDismiss(item.objectID)} className="button-inline">
             <b>Do</b> Dismiss
               </Button>
         </span>
