@@ -108,7 +108,8 @@ class App extends Component {
    
     return (
       <div className="page">
-      { result && 
+      
+      { result && /* we use ' {result && ... }' which will show the table if result has data if not it shows nothing (called conditional rendering) */
       <Table
       list={result.hits}
       pattern={searchTerm}
