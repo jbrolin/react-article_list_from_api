@@ -56,16 +56,15 @@ class App extends Component {
 
 
   onDismiss(id) {
-  
+    console.log("Dismiss");
     const isNotId = item => item.objectID !== id;
     const updatedHits = this.state.result.hits.filter(isNotId);
     this.setState({
-      result: { ...this.state.result, hits: updatedHits }
-      
+      result: { ...this.state.result, hits: updatedHits }  
     });
-  };
+  }
 
-
+  
   onReset() {
     // using non arrow function we need to bind the function to get access to 'this'.
     this.setState({ searchTerm: "" });
@@ -120,7 +119,6 @@ class App extends Component {
       pattern={searchTerm}
       onDismiss={this.onDismiss}
       />
-      <div className="interactions">
           <Search
             value={searchTerm}
             onChange={this.onSearchChange}
@@ -138,7 +136,7 @@ class App extends Component {
             Sort list by author
         </Button>
 
-        </div>
+        
       </div>
     );
   }
