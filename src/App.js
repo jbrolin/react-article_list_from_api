@@ -25,7 +25,7 @@ class App extends Component {
 
     };
     this.setSearchTopStories = this.setSearchTopStories.bind(this);
-    //this.onReset = this.onReset.bind(this); // we need to bind 'this' if function is not an arrow function
+    this.onReset = this.onReset.bind(this); // we need to bind 'this' if function is not an arrow function
     this.onSearchChange = this.onSearchChange.bind(this);
     this.onDismiss=this.onDismiss.bind(this);
 
@@ -108,12 +108,14 @@ class App extends Component {
    
     return (
       <div className="page">
-      
+      { result && 
       <Table
       list={result.hits}
       pattern={searchTerm}
       onDismiss={this.onDismiss}
       />
+      
+      }
       
            <div className="interactions">
           <Search
