@@ -3,11 +3,14 @@ import React, { Component } from "react";
 import "./App.css";
 
 const DEFAULT_QUERY = 'redux';
+const DEFAULT_HPP = '10';
 const PATH_BASE = 'https://hn.algolia.com/api/v1';
 const PATH_SEARCH = "/search";
 const PARAM_SEARCH = "query=";
+const PARAM_PAGE = "page=";
+const PARAM_HPP = "hitsPerPage=";
 
-const url = `${PATH_BASE}${PATH_SEARCH}?${PARAM_SEARCH}${DEFAULT_QUERY}`;
+const url = `${PATH_BASE}${PATH_SEARCH}?${PARAM_SEARCH}${DEFAULT_QUERY}&${PARAM_PAGE}&${PARAM_HPP}${DEFAULT_HPP}`;
 console.log("#####", url);
 const orgList =  [];
 
@@ -25,7 +28,7 @@ class App extends Component {
     };
     this.setSearchTopStories = this.setSearchTopStories.bind(this);
     this.fetchSearchTopStories = this.fetchSearchTopStories.bind(this);
-    this.onReset = this.onReset.bind(this); // we need to bind 'this' if function is not an arrow function
+   
     this.onSearchChange = this.onSearchChange.bind(this);
     this.onDismiss=this.onDismiss.bind(this);
     this.onSearchSubmit=this.onSearchSubmit.bind(this);
@@ -37,7 +40,20 @@ class App extends Component {
     event.preventDefault(); // prevent default behaviour in this case do not reload page
   }
   setSearchTopStories(result) {
-    this.setState({ result });
+    const {hits,page} = result;
+    console.log("hits",hits, page);
+    const oldHits = page !== 0
+      ? this.state.result.hits
+      : [];
+
+    const updatedHits = [
+      ...oldHits,
+      ...hits
+    ];
+
+    this.setState({ 
+      result :{hits: updatedHits, page}
+      });
   }
 
 
@@ -46,8 +62,8 @@ class App extends Component {
     this.setState({ searchTerm: event.target.value });
   }
 
-  fetchSearchTopStories(searchTerm){
-    fetch(`${PATH_BASE}${PATH_SEARCH}?${PARAM_SEARCH}${searchTerm}`)
+  fetchSearchTopStories(searchTerm, page=0){
+    fetch(`${PATH_BASE}${PATH_SEARCH}?${PARAM_SEARCH}${searchTerm}&${PARAM_PAGE}${page}&${PARAM_HPP}${DEFAULT_HPP}`)
       .then(response => response.json())
       .then(result => this.setSearchTopStories(result))
       .catch(error => error);
@@ -70,51 +86,16 @@ class App extends Component {
   }
 
   
-  onReset() {
-    // using non arrow function we need to bind the function to get access to 'this'.
-    this.setState({ searchTerm: "" });
-
-    // we need to copy the orginal list and resort it by objectID since the order of object are uncertain.
-    
-    const newOrgList = orgList.sort(function (a, b) {
-      return a.objectID - b.objectID
-    });
-
-    this.setState({ list: newOrgList });
-
-  }
-
-  onSortTitle = () => {
-    const updatedList = this.state.list.sort(function (a, b) {
-      var x = a.title.toLowerCase();
-      var y = b.title.toLowerCase();
-      if (x < y) { return -1; }
-      if (x > y) { return 1; }
-      return 0;
-    });
-    this.setState({ list: updatedList });
-    console.log(this.state.list);
-  }
-
-  onSortAuthor = () => {
-    const updatedList = this.state.list.sort(function (a, b) {
-      var x = a.author.toLowerCase();
-      var y = b.author.toLowerCase();
-      if (x < y) { return -1; }
-      if (x > y) { return 1; }
-      return 0;
-    });
-    this.setState({ list: updatedList });
-    console.log(this.state.list);
-  }
+  
 
 
 
   render() {
     const { searchTerm, result } = this.state; // destructing values from this.state
+    const page = (result && result.page) || 0;
     console.log("get", this.state, result);
 
-    if (!result) { return null; }
+    //if (!result) { return null; }
    
     return (
       <div className="page">
@@ -137,17 +118,11 @@ class App extends Component {
           >
           Search
           </Search>
-          <Button onClick={() => this.onReset()}>
-            Reset list
-        </Button>
 
-          <Button onClick={() => this.onSortTitle()}>
-            Sort list by title
-        </Button>
-
-          <Button onClick={() => this.onSortAuthor()}>
-            Sort list by author
-        </Button>
+          <Button onClick={() => this.fetchSearchTopStories(searchTerm, page+1)}>
+          Show more
+          </Button>
+        
 
         </div>
         
