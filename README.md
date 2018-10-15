@@ -2,7 +2,8 @@ This project was bootstrapped with [Create React App](https://github.com/faceboo
 
 ##
 Addtional libraries added to the project
-yarn add axios (npm install --save axios)
+npm install --save axios
+npm install --save-dev react-test-renderer
 ##
 
 Below you will find some information on how to perform common tasks.<br>
