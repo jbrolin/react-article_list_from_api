@@ -35,3 +35,132 @@ exports[`App has a valid snapshot 1`] = `
   </div>
 </div>
 `;
+
+exports[`Button has a valid snapshot 1`] = `
+<button
+  className=""
+  onClick={undefined}
+  type="button"
+>
+  Give Me More
+</button>
+`;
+
+exports[`Search has a valid snapshot 1`] = `
+<form
+  onSubmit={undefined}
+>
+  Filter:
+  <input
+    onChange={undefined}
+    type="text"
+    value={undefined}
+  />
+  <button
+    type="submit"
+  >
+    Search
+  </button>
+</form>
+`;
+
+exports[`Table has a valid snapshot 1`] = `
+<div
+  className="table"
+>
+  <div
+    className="table-row"
+  >
+    <span
+      className="largeColumn"
+    >
+      <a
+        href={undefined}
+        target="_new"
+      >
+        1
+      </a>
+    </span>
+    <span
+      className="midColumn"
+    >
+      1
+    </span>
+    <span
+      className="smallColumn"
+    >
+      1
+    </span>
+    <span
+      className="smallColumn"
+    >
+      2
+    </span>
+    <span
+      style={
+        Object {
+          "width": "10%",
+        }
+      }
+    >
+      <button
+        className="button-inline"
+        onClick={[Function]}
+        type="button"
+      >
+        <b>
+          Do
+        </b>
+         Dismiss
+      </button>
+    </span>
+  </div>
+  <div
+    className="table-row"
+  >
+    <span
+      className="largeColumn"
+    >
+      <a
+        href={undefined}
+        target="_new"
+      >
+        2
+      </a>
+    </span>
+    <span
+      className="midColumn"
+    >
+      2
+    </span>
+    <span
+      className="smallColumn"
+    >
+      1
+    </span>
+    <span
+      className="smallColumn"
+    >
+      2
+    </span>
+    <span
+      style={
+        Object {
+          "width": "10%",
+        }
+      }
+    >
+      <button
+        className="button-inline"
+        onClick={[Function]}
+        type="button"
+      >
+        <b>
+          Do
+        </b>
+         Dismiss
+      </button>
+    </span>
+  </div>
+</div>
+`;
