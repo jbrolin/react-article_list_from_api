@@ -2,8 +2,9 @@ This project was bootstrapped with [Create React App](https://github.com/faceboo
 
 ##
 Addtional libraries added to the project
-npm install --save axios
-npm install --save-dev react-test-renderer
+npm install --save axios #axios libraries to replace native fetch (more stable and compatible with older and headless browers)
+npm install --save-dev react-test-renderer  #jest snapshot test libraries
+npm install --save-dev enzyme react-addons-test-utils enzyme-adapter-react-16 #enzyme unit test libraries
 ##
 
 Below you will find some information on how to perform common tasks.<br>
