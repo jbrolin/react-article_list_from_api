@@ -1,3 +1,8 @@
+Article (hacker news) list with filter/search, sort, remove
+Fetches articles from hacker news api (https://hn.algolia.com/api/) 
+
+Reuse only code in App.js and not complete setup
+
 This project was bootstrapped with [Create React App](https://github.com/facebookincubator/create-react-app).
 
 ##
